@@ -7,7 +7,7 @@ The Simulator Comparison Tool is a project designed to compare different simulat
 The `simulator.json` file contains configuration parameters for the project. Example content:
 ```json
 {
-    "tree_filepath": "/path/to/tree/file",
+    "tree_filepath": "/path/to/treefile",
     "num_nodes": 100,
     "indel_rate": 0.05,
     "length_seq": 500,
