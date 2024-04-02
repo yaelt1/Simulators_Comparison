@@ -17,7 +17,7 @@ python main.py --config /path/to/simulator.json
 - result_path: Path to the directory where simulation results will be saved.
 - modules: List of simulation modules to be used (e.g., "alisim", "indelible", "sailfish").
 - number_of_simulations: The number of simulations to perform for each module.
-- `features`: List of feature numbers to analyze in the simulation results (e.g., 1 for "Number of Gaps", 2 for "Avg Gap Length", etc.). Explanation of each feature number can be found in the Global Variables section.
+- features: List of feature numbers to analyze in the simulation results (e.g., 1 for "Number of Gaps", 2 for "Avg Gap Length", etc.). Explanation of each feature number can be found in the Global Variables section.
 
 `simulator.json` Example Content:
 ```json
