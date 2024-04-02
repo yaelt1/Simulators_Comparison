@@ -16,6 +16,7 @@ The `simulator.json` file contains configuration parameters for the project. Exa
     "number_of_simulations": 1000,
     "features": [1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 }
+```
 
 ## Global Variables
 
