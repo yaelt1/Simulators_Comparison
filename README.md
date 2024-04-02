@@ -9,8 +9,17 @@ To run the Simulator Comparison Tool, execute the following command from the pro
 ```python
 python main.py --config /path/to/simulator.json
 ```
+## Explanation of Parameters in Config file
+tree_filepath: Path to the file containing the tree structure used for simulation.
+num_nodes: The number of nodes in the tree.
+indel_rate: The rate of indel (insertion and deletion) events during sequence simulation.
+length_seq: The length of the sequences to be generated.
+result_path: Path to the directory where simulation results will be saved.
+modules: List of simulation modules to be used (e.g., "alisim", "indelible", "sailfish").
+number_of_simulations: The number of simulations to perform for each module.
+features: List of feature numbers to analyze in the simulation results (e.g., 1 for "Number of Gaps", 2 for "Avg Gap Length", etc.).
 
-The `simulator.json` file contains configuration parameters for the project. Example content:
+`simulator.json` Example Content:
 ```json
 {
     "tree_filepath": "/path/to/treefile",
