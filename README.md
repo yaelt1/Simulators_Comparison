@@ -14,7 +14,7 @@ The `simulator.json` file contains configuration parameters for the project. Exa
 ```json
 {
     "tree_filepath": "/path/to/treefile",
-    "num_nodes": 100,
+    "num_nodes": number_of_nodes_in_tree,
     "indel_rate": 0.01,
     "length_seq": 500,
     "result_path": "/path/to/results",
