@@ -10,7 +10,7 @@ To run the Simulator Comparison Tool, execute the following command from the pro
 ```python
 python main.py --config /path/to/simulator.json
 ```
-## Explanation of Parameters in Config file
+## Configuration File Parameters
 - tree_filepath: Path to the file containing the tree structure used for simulation.
 - num_nodes: The number of nodes in the tree.
 - indel_rate: The rate of indel (insertion and deletion) events during sequence simulation.
