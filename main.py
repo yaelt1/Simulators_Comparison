@@ -7,6 +7,7 @@ from globals import feature_dict
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
+import argparse
 
 def file_to_array(paths:list[str], n:int=10000)-> np.array:
     data = np.zeros(len(paths)*n)
@@ -45,10 +46,19 @@ def df_of_all(seq_length, indel_rate, result_path, modules, number_of_simulation
         fig_path = os.path.join(result_path, f"{feature_name}_hist.png")
         plt.savefig(fig_path)
         plt.show()
-        
-if __name__=="__main__": 
-    with open('/Users/yaeltzur/Desktop/uni/second_year/lab_project/simulator.json') as f:
-        data = json.load(f)
+def parse_args():
+    parser = argparse.ArgumentParser(description='Simulator Comparison Tool')
+    parser.add_argument('--config', type=str, help='Path to the configuration JSON file')
+    return parser.parse_args()
+
+if __name__ == "__main__":
+    args = parse_args()
+    if args.config:
+        with open(args.config) as f:
+            data = json.load(f)
+    else:
+        print("Error: Please provide a configuration JSON file using --config option.")
+        exit(1)
     tree_filepath = data['tree_filepath']
     num_nodes = data['num_nodes']
     indel_rate = data['indel_rate']
