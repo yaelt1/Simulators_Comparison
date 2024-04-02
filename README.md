@@ -9,7 +9,7 @@ The `simulator.json` file contains configuration parameters for the project. Exa
 {
     "tree_filepath": "/path/to/treefile",
     "num_nodes": 100,
-    "indel_rate": 0.05,
+    "indel_rate": 0.01,
     "length_seq": 500,
     "result_path": "/path/to/results",
     "modules": ["alisim", "indelible", "sailfish"],
