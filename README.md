@@ -20,7 +20,7 @@ python main.py --config /path/to/simulator.json
 - number_of_simulations: The number of simulations to perform for each module.
 - features: List of feature numbers to analyze in the simulation results (e.g., 1 for "Number of Gaps", 2 for "Avg Gap Length", etc.). Explanation of each feature number can be found in the Global Variables section.
 
-`simulator.json` Example Content:
+`simulator.json` Example:
 ```json
 {
     "tree_filepath": "/path/to/treefile",
