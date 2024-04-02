@@ -4,6 +4,12 @@ The Simulator Comparison Tool is a project designed to compare different simulat
 1. Clone the repository.
 3. Set up the project configuration by editing `simulator.json"
 
+## Running the Program
+To run the Simulator Comparison Tool, execute the following command from the project's main directory:
+```python
+python main.py --config /path/to/simulator.json
+```
+
 The `simulator.json` file contains configuration parameters for the project. Example content:
 ```json
 {
@@ -43,8 +49,4 @@ feature_dict = {
 }
 ```
 
-## Running the Program
-To run the Simulator Comparison Tool, execute the following command from the project's main directory:
-```python
-python main.py --config /path/to/simulator.json
-```
+
