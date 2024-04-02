@@ -41,3 +41,10 @@ feature_dict = {
     14: "Cols With 2 Gaps",
     15: "Cols With n-1 Gaps"
 }
+```
+
+## Running the Program
+To run the Simulator Comparison Tool, execute the following command from the project's main directory:
+```python
+python main.py --config /path/to/simulator.json
+```
