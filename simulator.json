@@ -4,7 +4,7 @@
     "indel_rate": 0.01,
     "length_seq": 100,
     "result_path": "path/for/results",
-    "modules": ["indelible"],
+    "modules": ["indelible", "alisim", "sailfish"],
     "features": [1,2,5,6,7,8,9,10,11,12,13,14,15],
     "number_of_simulations":10
 }
