@@ -3,7 +3,8 @@ The Simulator Comparison Tool is a project designed to compare different simulat
 ## Installation
 1. Clone the repository.
 3. Set up the project configuration by editing `simulator.json"
-
+4. If necessary, configure global variables by editing `globals.py`.
+   
 ## Running the Program
 To run the Simulator Comparison Tool, execute the following command from the project's main directory:
 ```python
