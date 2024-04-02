@@ -26,7 +26,7 @@ python main.py --config /path/to/simulator.json
     "tree_filepath": "/path/to/treefile",
     "num_nodes": number_of_nodes_in_tree,
     "indel_rate": 0.01,
-    "length_seq": 500,
+    "length_seq": 1000,
     "result_path": "/path/to/results",
     "modules": ["alisim", "indelible", "sailfish"],
     "number_of_simulations": 1000,
