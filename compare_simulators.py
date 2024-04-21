@@ -16,9 +16,6 @@ import globals
 import logging
 from globals import feature_dict
 class features_calculator: 
-    """
-    
-    """
     def __init__(self, module) -> None:
         self.module = module
         self.num_of_gaps = 0
@@ -36,8 +33,6 @@ class features_calculator:
         self.cols_w_n_minus_1 = 0
         
 
-
- 
 def colums_gap_calc(path, features: features_calculator):
     with open(path) as f:
         first_line = f.readline()
@@ -60,6 +55,7 @@ def colums_gap_calc(path, features: features_calculator):
         if gap_counter == n-1:
             features.cols_w_n_minus_1 +=1    
            
+
 def gap_blocks_features_calc(path:str, features: features_calculator )->None:
     with open(path) as f:
         first_line = f.readline()
@@ -88,6 +84,7 @@ def gap_blocks_features_calc(path:str, features: features_calculator )->None:
                     cur_gap = 0
                 i+=1
                         
+
 def longest_n_shortest(path:str, features: features_calculator)->tuple:
     """ 
     find longest and shortest length sequnces from simulator's result
@@ -107,10 +104,12 @@ def longest_n_shortest(path:str, features: features_calculator)->tuple:
     features.min_val = min_val
     features.max_val= max_val
 
+
 def get_len_without_gaps(seq:str)->int:
     cnt = 0
     cnt = sum([1 if seq[i]!= "-" else 0 for i in range(len(seq))])
     return cnt
+
 
 def longest_n_shortest_v2(path:str, features: features_calculator)->tuple:
     """ 
@@ -133,21 +132,20 @@ def longest_n_shortest_v2(path:str, features: features_calculator)->tuple:
     features.max_val= max_val
 
 
-
 def remove_all_gaps_columns(alignment):
     gap_columns = [i for i in range(alignment.get_alignment_length()) if all(record.seq[i] == "-" for record in alignment)]
 
     # Create a new alignment excluding columns with only gaps
     filtered_alignment = MultipleSeqAlignment(
     SeqRecord(Seq("".join(record.seq[i] for i in range(alignment.get_alignment_length()) if i not in gap_columns)), id=record.id)
-    for record in alignment
-)
+    for record in alignment)
     return filtered_alignment
 
 
 def write_filtered_fasta(filtered_alignment, output_filename):
     with open(output_filename, "w") as output_handle:
         AlignIO.write(filtered_alignment, output_handle, "fasta")    
+
 
 def analyze_simulation_output(module:str , output_filename_with_gap:str=None, output_without_gap:str=None, features:list= [1,2,5,6,7,8,9,10,11,12,13,14,15])-> dict:
     """_summary_
@@ -174,7 +172,7 @@ def analyze_simulation_output(module:str , output_filename_with_gap:str=None, ou
     if module != "sailfish":
         filtered_alignment = remove_all_gaps_columns(alignment)
         write_filtered_fasta(filtered_alignment, output_filename_with_gap)
-        logging.info("Filtered alignment written to %s", output_filename_with_gap)
+        # logging.info("Filtered alignment written to %s", output_filename_with_gap)
            
     # check if there are blocks-related features
     if features&{1,2,5,6,7,8,9}:
@@ -206,11 +204,6 @@ def analyze_simulation_output(module:str , output_filename_with_gap:str=None, ou
         result_dict[15] = features_holder.cols_w_n_minus_1
     return result_dict
 
-def save_features_results(module_res_path, feature, result):
-    all_features = os.path.join(module_res_path, f"{feature}.txt")
-    with open(all_features, 'w') as f:
-        for item in result:
-            f.write(f'{item}\n')
 
 def get_features(module, output_path_with_gaps, output_path_without_gaps, features, all_results):
     features_result = analyze_simulation_output(module, output_path_with_gaps, output_path_without_gaps, features)
@@ -221,6 +214,7 @@ def get_features(module, output_path_with_gaps, output_path_without_gaps, featur
             all_results[key] = [features_result[key]]
     return all_results
                     
+
 def multi_time_simulation(tree_path:str, module:str, features:list,module_res_path:str ,seq_length:int=10000, indel_rate:float=0.01, number_of_simulations =1000)-> None:
     """
     Runs a module 10000 times, checks the features of interest and saves the results in txt file for each run
@@ -253,46 +247,23 @@ def multi_time_simulation(tree_path:str, module:str, features:list,module_res_pa
             print("Model is not Supported")
             break
         all_results=get_features(module, output_path_with_gaps, output_path_without_gaps, features, all_results)
-        
-    for key in all_results.keys():
-        feature = feature_dict[key]
-        save_features_results(module_res_path, feature, all_results[key] )
-        # data_to_hist(all_results[key], feature, module) 
-      
+    return all_results
 
-def file_to_array(file_path:str, n:int):
-    data = np.zeros(n)
-    i=0
-    with open(file_path, "r") as f:
-        lines = f.readlines()
-        for line in lines:
-            line = line.strip()
-            data[i] = (float(line))
-            i+=1
-    return data
+
+def save_results(all_results, path):
+    cols = sorted(list(all_results.keys()))
+    df = pd.DataFrame(columns=cols)
+    for key in all_results.keys():
+        df[key] = all_results[key]
+    print(os.path.join(path, "features.csv"))
+    df.to_csv(os.path.join(path, "features.csv"))
                
-def files_to_df():
-    data = []
-    cols = list(feature_dict.values()).sort()
-    
-    cols.append("module")
-    modules = ["alisim", "indelible"]
-    for mod in modules:
-        for feature_name, feature_file_prefix in feature_dict.items(): 
-            path = f"large_scale_simulations/{mod.upper()}/{feature_file_prefix}_{mod}.txt"
-            arr = file_to_array(path)
-            arr.append(f"mof")
-            data.append(arr)    
-            
-    feature_df = pd.DataFrame(data , columns= cols)
-    return feature_df
-        
-    
+
 def compare_main(indel_rate:float, seq_length:int, result_path:str, tree_path:str, num_nodes:int, features:set, modules:list, number_of_simulations:int)-> None:   
     modules = [mod for mod in modules]
     os.makedirs(result_path, exist_ok=True)
     for mod in modules:
         mod_reuslt_path = os.path.join(result_path, mod.upper())
         os.makedirs(mod_reuslt_path, exist_ok=True)
-        multi_time_simulation(tree_path,mod, features, seq_length=seq_length, indel_rate= indel_rate, module_res_path=mod_reuslt_path, number_of_simulations=number_of_simulations)
-    
+        features_results = multi_time_simulation(tree_path,mod, features, seq_length=seq_length, indel_rate= indel_rate, module_res_path=mod_reuslt_path, number_of_simulations=number_of_simulations)
+        save_results(features_results, mod_reuslt_path)
