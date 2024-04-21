@@ -8,44 +8,27 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
 import argparse
+from create_figs import craete_subfigs
 
-def file_to_array(paths:list[str], n:int=10000)-> np.array:
-    data = np.zeros(len(paths)*n)
-    i=0
-    for path in paths:
-        with open(path, "r") as f:
-            lines = f.readlines()
-            for line in lines:
-                line = line.strip()
-                data[i] = (float(line))
-                i+=1
-    return data
-
-def df_of_all(seq_length, indel_rate, result_path, modules, number_of_simulations):
-    cols = [v for k,v in feature_dict.items()]
-    cols.sort()
-    cols.append("Module")
+def df_of_all_modules(seq_length, indel_rate, result_path, modules, number_of_simulations):
+    cols = sorted(list(feature_dict.keys())).append("Module")
     feature_df = pd.DataFrame(columns= cols)
-    for feature_number, feature_name in feature_dict.items(): 
-        files=[]
-        for mod in modules:
-            files.append(os.path.join(result_path,mod.upper(),feature_name+".txt"))
-        arr = file_to_array(files, number_of_simulations)
-        feature_df[f"{feature_name}"] = arr
-    
-    samples = 0
-    for mod in modules:        
-        feature_df["Module"][samples:samples+number_of_simulations] = mod
-        samples += number_of_simulations
-    
+    files=[]
+    for mod in modules:
+        file = (os.path.join(result_path,mod.upper(),"features.csv"))
+        df = pd.read_csv(file)
+        df["Module"] = [f"{mod}"]*number_of_simulations
+        feature_df = pd.concat([feature_df, df], ignore_index=True)
+    feature_df.to_csv(os.path.join(result_path, "all_modules_features.csv"), index=False)
     annotation_str = f"Indel Rate:{indel_rate}\nSequence Length:{seq_length}"
     for feature_number, feature_name  in feature_dict.items(): 
-        sns.histplot(data=feature_df, x=f'{feature_name}', hue='Module', alpha=0.7)
+        sns.histplot(data=feature_df, x=f'{feature_number}', hue='Module', alpha=0.7)
         plt.title(f"{feature_name}")
         plt.annotate(annotation_str, (1, 2), xytext=(0.86, 1.005), fontsize=9, ha='center', xycoords='axes fraction')
         fig_path = os.path.join(result_path, f"{feature_name}_hist.png")
         plt.savefig(fig_path)
         plt.show()
+        
 def parse_args():
     parser = argparse.ArgumentParser(description='Simulator Comparison Tool')
     parser.add_argument('--config', type=str, help='Path to the configuration JSON file')
@@ -67,7 +50,8 @@ if __name__ == "__main__":
     modules = data['modules']
     number_of_simulations = data['number_of_simulations']
     features = set(data['features'])
-    result_path = os.path.join(result_path, f"{num_nodes}Nodes_{indel_rate}Rate_{length_seq}Length")
+    name = f"{num_nodes}Nodes_{indel_rate}Rate_{length_seq}Length"
+    result_path = os.path.join(result_path, name)
     os.makedirs(result_path, exist_ok=True)
     log_path = os.path.join(result_path, 'Simulators_comparison.log')
     logging.basicConfig(filename=log_path, level=logging.INFO) 
@@ -79,7 +63,7 @@ if __name__ == "__main__":
     logging.info('result_path: %s', result_path)
     logging.info('Starting the comparison of simulators')
     compare_main(indel_rate, length_seq, result_path, tree_filepath, num_nodes, features, modules, number_of_simulations)    
-    df_of_all(length_seq, indel_rate, result_path, modules, number_of_simulations)
-    
+    df_of_all_modules(length_seq, indel_rate, result_path, modules, number_of_simulations)
+    craete_subfigs(length_seq, indel_rate, result_path, modules, number_of_simulations,name )
         
         
