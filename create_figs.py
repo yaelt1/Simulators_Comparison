@@ -6,17 +6,15 @@ import globals
 from globals import feature_dict
 
 def craete_subfigs(seq_length, indel_rate, result_path, modules, number_of_simulations, fig_name):
-    cols = sorted(list(feature_dict.keys())).append("Module")
-    feature_df = pd.DataFrame(columns=cols)
+    feature_df = pd.DataFrame()
     files = []
     for mod in modules:
         file = os.path.join(result_path, mod.upper(), "features.csv")
-        df = pd.read_csv(file)
+        df = pd.read_csv(file, index_col=0)
         df["Module"] = [f"{mod}"] * number_of_simulations
         feature_df = pd.concat([feature_df, df], ignore_index=True)
     feature_df.to_csv(os.path.join(result_path, "all_modules_features.csv"), index=False)
     annotation_str = f"Indel Rate:{indel_rate}\nSequence Length:{seq_length}"
-    feature_df = feature_df.drop(columns=['Unnamed: 0'])
     rows = 4
     cols = 4
     fig, axs = plt.subplots(rows,cols, figsize=(15, 15))  # Create a 4x4 grid for 16 subplots
