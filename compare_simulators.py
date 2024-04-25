@@ -15,6 +15,8 @@ from Bio.Align import MultipleSeqAlignment
 import globals
 import logging
 from globals import feature_dict
+
+
 class features_calculator: 
     def __init__(self, module) -> None:
         self.module = module
@@ -111,7 +113,7 @@ def get_len_without_gaps(seq:str)->int:
     return cnt
 
 
-def longest_n_shortest_v2(path:str, features: features_calculator)->tuple:
+def longest_n_shortest_sailfish(path:str, features: features_calculator)->tuple:
     """ 
     find longest and shortest length sequnces from simulator's result - output with gaps
 
@@ -189,7 +191,7 @@ def analyze_simulation_output(module:str , output_filename_with_gap:str=None, ou
     # check if there are longest and shortest related features
     if features&{10,11}:
         if output_without_gap == None:
-            longest_n_shortest_v2(output_filename_with_gap, features_holder)
+            longest_n_shortest_sailfish(output_filename_with_gap, features_holder)
         else:    
             longest_n_shortest(output_without_gap, features_holder)
         result_dict[10] = features_holder.min_val
