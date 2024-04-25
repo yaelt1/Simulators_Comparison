@@ -11,7 +11,6 @@ def AlisimCommandline(tree_path:str, result_path:str, seq_length:int=1000, indel
 	"""
 	origin_dir = os.getcwd()
 	os.chdir(result_path)
-	print(os.getcwd())
 	indel_rates =str(indel_rate)+","+str(indel_rate)
 	run_iqtree_alisim(output_alignment_filename,tree_path, indel_rates, indel_size, seq_length=seq_length)
 	
